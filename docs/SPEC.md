@@ -1,5 +1,6 @@
 # AgentSpec — EDU-PULSE Adaptive Revision Agent
 **Team: New Stars**
+
 **Department: Information Technology**
 
 ## 1. The Setting
