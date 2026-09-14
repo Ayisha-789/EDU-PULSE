@@ -88,17 +88,13 @@ The agent identifies:
 
 The agent goes back to the student's uploaded material and retrieves the relevant 2NF notes instead of asking the student to reread the entire topic.
 
-The agent tells the student:
-
-> "You have not yet reached 100% in 2NF. Please reread the 2NF material provided from your uploaded notes before attempting the next quiz."
+**The agent tells the student:** "You have not yet reached 100% in 2NF. Please reread the 2NF material provided from your uploaded notes before attempting the next quiz."
 
 ### Step 5 — Student revises the concept
 
 The student rereads the retrieved 2NF material.
 
-The agent asks:
-
-> "Have you finished revising 2NF and are you ready for the follow-up quiz?"
+**The agent asks:** "Have you finished revising 2NF and are you ready for the follow-up quiz?"
 
 **Student:** "Yes, I'm ready."
 
