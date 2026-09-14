@@ -267,4 +267,75 @@ class RevisionSession(BaseModel):
 
 **Why it helps:** Typed records make the data passed between steps clear and structured. They also allow the agent to preserve the student's progress, quiz history, and concept-wise results so the session can be resumed correctly.
 
-## 8.
+## 8. Step-by-step contracts
+### 1. Material Analysis — START → Initial Quiz
+
+- **What:** Reads the student's uploaded study material and identifies the important concepts/subtopics to be tested.
+- **Why this way:** The quiz should be based on the student's actual material rather than unrelated general knowledge.
+- **Reads / writes:** Reads the uploaded study material; writes the identified concepts to the session record.
+- **Done when:** The important concepts have been identified and stored.
+
+### 2. Initial Quiz — Initial Quiz → Initial Evaluation
+
+- **What:** Generates a comprehensive quiz covering the identified concepts.
+- **Why this way:** The quiz must check understanding across all identified concepts.
+- **Reads / writes:** Reads the identified concepts and study material; writes the generated quiz to the session record.
+- **Done when:** The quiz is generated and presented to the student.
+
+### 3. Initial Evaluation — Initial Evaluation → Targeted Material Retrieval / Finished
+
+- **What:** Evaluates the student's answers concept-wise and calculates a score for each concept.
+- **Why this way:** An overall score alone may hide weaknesses in individual concepts.
+- **Reads / writes:** Reads the quiz and student answers; writes concept-wise results and scores.
+- **Done when:** Every identified concept has been evaluated. If all are at 100%, the session finishes. Otherwise, the next non-mastered concept is selected.
+
+### 4. Targeted Material Retrieval — Targeted Material Retrieval → Waiting for Student Revision
+
+- **What:** Retrieves the relevant notes or explanation for the selected non-mastered concept from the student's uploaded study material.
+- **Why this way:** The student should revise only the concept that needs improvement instead of rereading the entire topic.
+- **Reads / writes:** Reads the uploaded study material and selected concept; writes the retrieved revision material to the session record.
+- **Done when:** Relevant material for the selected concept has been retrieved and shown to the student.
+
+### 5. Waiting for Student Revision — Waiting for Student Revision → Targeted Quiz
+
+- **What:** Waits for the student to confirm that they have finished revising and are ready for the follow-up quiz.
+- **Why this way:** The student must control when they are ready to be tested.
+- **Reads / writes:** Reads the student's response; writes the response and updated state.
+- **Done when:** The student confirms that they are ready. If there is no response, the session remains paused.
+
+### 6. Targeted Quiz — Targeted Quiz → Targeted Evaluation
+
+- **What:** Generates a new quiz specifically for the concept that was not mastered.
+- **Why this way:** The follow-up quiz checks whether the targeted revision improved understanding of that concept.
+- **Reads / writes:** Reads the selected concept and retrieved revision material; writes the targeted quiz and student's answers.
+- **Done when:** The student submits the targeted quiz answers.
+
+### 7. Targeted Evaluation — Targeted Evaluation → Finished / Targeted Material Retrieval
+
+- **What:** Evaluates the targeted quiz and checks whether the concept has reached 100% mastery.
+- **Why this way:** The agent must verify improvement instead of assuming that revision was successful.
+- **Reads / writes:** Reads the targeted quiz and student answers; writes the updated concept score and revision attempt count.
+- **Done when:** If the concept reaches 100%, the agent checks the remaining concepts. If it is still below 100%, the work goes back to Targeted Material Retrieval.
+
+### 8. Finish Check — Evaluation → Finished
+
+- **What:** Checks whether every identified concept has reached 100% mastery.
+- **Why this way:** The agent should finish only when all identified concepts satisfy the mastery condition.
+- **Reads / writes:** Reads all stored concept results; writes the final session status.
+- **Done when:** Every identified concept has reached 100%.
+
+### Where the documents come in
+
+- **What document it reads:** The student's uploaded study material for the selected topic.
+- **What it proves:** It provides the source material from which concepts, quiz content, and targeted revision material are derived.
+- **What it does when evidence is missing:** If the uploaded material does not contain enough information for a required concept or targeted explanation, the agent records that the required evidence is missing instead of filling the gap from general knowledge.
+- **How a citation gets checked:** Any retrieved explanation shown as coming from the uploaded material must correspond to content actually present in that material.
+
+### Where the human comes in
+
+- **The question it asks:** "Have you finished revising the weak concept and are you ready for the follow-up quiz?"
+- **Who answers:** The student.
+- **What record the answer becomes:** The student's readiness response is stored in the session record.
+- **How that record reaches the decision:** A "Yes" response allows the workflow to move to the Targeted Quiz. If there is no response, the session remains in the waiting state.
+- **What happens if nobody answers:** The session stays paused and the targeted quiz is not generated.
+- **How the output shows that:** The session record shows that the agent is waiting for the student's response.
