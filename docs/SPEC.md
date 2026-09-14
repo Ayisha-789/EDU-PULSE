@@ -45,9 +45,13 @@ The agent keeps the student's progress and quiz results, decides which subtopic 
 
 ### Step 1 — Student starts the revision session
 **Student:** Ayisha
+
 **Topic:** DBMS Normalisation
+
 **Study material:** Uploaded DBMS Normalisation PDF
-The agent reads the material and identifies these important concepts:
+
+**The agent reads the material and identifies these important concepts:**
+
 - Functional Dependencies
 - 1NF
 - 2NF
@@ -163,26 +167,36 @@ The agent stores the final revision result:
 **How the output shows that:** The session record shows that the agent is waiting for the student's response, rather than continuing automatically. Once the student responds, the record is updated and the agent either proceeds to the targeted quiz or remains waiting if the student is not ready.
 
 ## 6. The state machine
-```mermaid
-flowchart TD
-    A[Material Analysis] --> B[Initial Quiz]
-    B --> C[Initial Evaluation]
-
-    C --> D{All concepts at 100%?}
-    D -->|Yes| E[FINISHED]
-    D -->|No| F[Targeted Material Retrieval]
-
-    F --> G[Waiting for Student Revision]
-    G --> H[Targeted Quiz]
-    H --> I[Targeted Evaluation]
-
-    I --> J{Concept at 100%?}
-    J -->|Yes| K{All remaining concepts at 100%?}
-    K -->|Yes| E
-    K -->|No| F
-
-    J -->|No| F
-```
+Material Analysis → Initial Quiz → Initial Evaluation
+                                      |
+                         ┌────────────┴────────────┐
+                         ↓                         ↓
+              All concepts = 100%       Any concept < 100%
+                         |                         |
+                         ↓                         ↓
+                      FINISHED          Targeted Material
+                                           Retrieval
+                                               |
+                                               ↓
+                                    Waiting for Student
+                                         Revision
+                                               |
+                                               ↓
+                                        Targeted Quiz
+                                               |
+                                               ↓
+                                      Targeted Evaluation
+                                               |
+                                               ↓
+                                    Concept = 100%?
+                                      /           \
+                                    Yes            No
+                                     |              |
+                                     ↓              |
+                              Check remaining       |
+                                concepts            |
+                                     |              |
+                                     └──────────────┘
 
 | State | Active / Waiting / Finished | What moves it on |
 |---|---|---|
