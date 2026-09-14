@@ -363,7 +363,132 @@ State names, state transitions, stored record structure, spend limit, and revisi
 **Which are our domain decisions:**  
 The 100% mastery requirement, concept-wise evaluation, and the decision to send a concept back for targeted revision are specific to our EDU-PULSE agent.
 
-A model call needs a clear prompt, the step it belongs to, and a defined budget. Other helper code supports the workflow.
+## 11. What this deliberately does not do
+1. **It does not create a full study timetable or daily schedule.**  
+   We considered adding planning and scheduling, but our main goal for this agent is to check whether the student actually understands a particular topic and help them improve weak concepts.
+
+2. **It does not handle multiple subjects or topics in one session.**  
+   We considered supporting multiple subjects, but we are keeping the agent focused on one topic so that the revision → quiz → evaluation loop can be properly built and tested within the two-day hackathon.
+
+3. **It does not use web search or outside study resources.**  
+   The agent uses the student's uploaded material for the quiz and targeted revision. This keeps the source of the learning material clear and keeps the scope manageable for the hackathon.
+
+4. **It does not send parent/guardian alerts.**  
+   We considered this as part of the larger EDU-PULSE idea, but it is outside the scope of this agent. We are focusing on proving the core learning and backward revision loop first.
+
+5. **It does not build the complete mobile app as part of this agent.**  
+   The mobile app is part of the larger EDU-PULSE idea, but for this two-day agent slice we are focusing on building and testing the agent workflow first.
+
+## 12. Build order
+| Phase | What lands | Hours |
+|---|---|---:|
+| 1 | Build the basic end-to-end flow: upload study material → identify concepts → generate quiz → student answers → concept-wise evaluation. We first use simple/fixed test answers to make sure the flow works. | 8 |
+| **Cut line** | **We can upload material, generate a quiz, evaluate the answers concept-wise, and identify concepts below 100%.** | |
+| 2 | Add targeted material retrieval and the student waiting step. The agent finds the relevant material for a concept below 100% and waits for the student to confirm that they are ready for the next quiz. | 10 |
+| **Cut line** | **The student can revise a specific weak concept and take a targeted quiz on it.** | |
+| 3 | Add state management, saved session data, concept-wise history, and the backward revision loop. The agent can go back to revision and re-testing when a concept is still below 100%. | 14 |
+| **Cut line** | **The complete agentic loop works: identify weak concept → retrieve material → student revises → targeted quiz → evaluate → repeat if needed.** | |
+| 4 | Connect and improve the real model calls, handle errors, test the workflow with classmates, fix issues, and prepare the final demonstration. | 16 |
+| **Cut line** | **A working and tested one-topic revision agent is ready for the final demo.** | |
+
+### How we will build
+We will first make the complete workflow work with simple test answers before spending time on prompts and other improvements. Then we will connect the real model calls and improve the responses.
+
+We will also save useful model responses during testing so that we can replay them when needed instead of repeatedly making the same model calls.
+
+### Where the hours will actually go
+The time will mainly go into building the workflow, connecting the model calls, testing concept-wise evaluation and targeted material retrieval, and making sure the backward revision loop works correctly. We will also test the agent with classmates and use their feedback to fix problems before the final demo.
+
+The main fallback is the cut line after Phase 3. Even if we cannot finish the final improvements, we will still have the complete one-topic revision loop working.
+
+## 13. The demo
+1. **Student starts a revision session**
+   - The student selects a topic and uploads the study material.
+   - The agent identifies the important concepts and creates the initial quiz.
+
+2. **Student takes the quiz**
+   - The student answers the questions.
+   - The agent evaluates the answers concept-wise and shows which concept is below 100%.
+
+3. **Agent finds the concept that needs revision**
+   - The agent retrieves the relevant part of the uploaded material for the concept that is below 100%.
+   - The student revises only that material.
+
+4. **Student confirms readiness**
+   - The agent asks whether the student is ready for the targeted quiz.
+   - The student responds and the workflow continues.
+
+5. **Targeted re-test**
+   - The agent generates a new quiz for the concept that was below 100%.
+   - The student answers it and the agent evaluates the result.
+
+6. **Backward loop**
+   - If the concept is still below 100%, the agent sends it back for revision and re-testing.
+   - If it reaches 100%, the agent checks the remaining concepts.
+
+7. **Final result**
+   - When all identified concepts reach 100%, the agent finishes and shows the student's final result and revision history.
+
+### Which beat is the main argument
+The main beat is the **backward loop**: the agent finds a concept the student has not mastered, retrieves the relevant material, waits for the student to revise, and sends the concept for another targeted quiz instead of simply giving an overall score.
+
+### What is live and what is recorded
+The main revision flow will be shown live. If a model response takes too long or is unreliable during the demo, we will use a previously saved model response for that part and clearly indicate that it is recorded.
+
+### If the model gives an unexpected result
+If the model gives an incorrect or unexpected response, we will not silently accept it. The application will check the required structure and mastery condition, and we will show the result only when it passes the required checks.
 
 **Why it helps:** Each file has a clear responsibility, so different team members can work on different parts without changing the whole workflow.
+
+## 14. How this grows
+Our current agent is focused on checking one topic at a time. The same structure can be extended later without changing the main revision loop.
+
+1. **Multiple subjects and topics**  
+   The current workflow can be extended to handle multiple topics and subjects. This would mainly require adding subject/topic information to the stored session records and allowing the student to choose between them.
+
+2. **Study planning and scheduling**  
+   A planning agent could be added later to decide when the student should revise each topic. The current revision agent can remain unchanged and receive a topic when it is time to study.
+
+3. **Parent/guardian accountability**  
+   Parent or guardian notifications could be added later when a student repeatedly skips or does not complete a revision session. This would need a new notification component and additional student/guardian information.
+
+4. **More learning resources**  
+   The agent could later support additional trusted study resources. This would require changes to the material retrieval part so that it can work with different sources.
+
+5. **Learning history and long-term analysis**  
+   The stored concept-wise results can later be used to identify long-term strengths and weaknesses across different topics and revision sessions.
+
+## 15. What you are least sure about
+
+1. **Whether the agent can identify the important concepts correctly from different study materials.**  
+   We need to test whether the concepts selected by the agent are actually relevant and whether it misses any important concept.
+
+2. **Whether the agent can evaluate student answers correctly at the concept level.**  
+   We need to test whether the agent can correctly decide if an answer shows understanding of the concept, especially for answers written in different ways.
+
+3. **Whether the targeted material retrieval gives the right explanation for the concept that needs revision.**  
+   We need to test whether the agent retrieves the relevant part of the uploaded material instead of unrelated content.
+
+## 16. Claims to verify
+| Claim | How to check | Checked? |
+|---|---|---|
+| The model can identify the important concepts from the uploaded study material. | Test it with the DBMS Normalisation material and compare the identified concepts with the material. | Not yet |
+| The model can generate questions that match the identified concepts. | Check whether the generated questions actually test the intended concepts. | Not yet |
+| The model can evaluate student answers correctly at the concept level. | Give it sample answers with known correct/incorrect results and compare its evaluation. | Not yet |
+| The agent can retrieve the correct material for a concept below 100%. | Give it a known weak concept and check whether it retrieves the relevant part of the uploaded material. | Not yet |
+| The saved session can be loaded when the student returns. | Complete a session, save it, start again, and check whether the previous results are loaded correctly. | Not yet |      
+
+## Before you call it done
+### The check that the pipeline works
+Run the complete flow from start to finish:
+
+**Upload material → identify concepts → generate quiz → evaluate → retrieve weak-concept material → student revision → targeted quiz → re-evaluate → finish.**
+
+Check that the session reaches the correct final state and that the stored scores and revision history are updated correctly.
+
+### The adversarial check
+Check what happens if the uploaded study material contains instructions such as "ignore the task" or other text that tries to change what the agent should do.
+
+The agent should treat the uploaded material as **study data, not as instructions**. It should continue following the defined workflow and should not let the uploaded content change the agent's rules or state transitions.
+
 
