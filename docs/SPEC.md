@@ -32,83 +32,116 @@ The agent never declares the student ready based only on the overall score; it m
 The agent keeps the student's progress and quiz results, decides which subtopic needs attention based on the student's answers, retrieves the relevant part of the uploaded material for revision, and chooses whether to finish or send the work back for targeted revision and another quiz. The student is part of the loop by answering the quizzes and confirming when they are ready to continue, and the workflow can pause for the student's response and resume later. The important difference from a normal AI quiz generator is that the agent does not simply generate questions and give a score—it evaluates the result, decides the next action, retrieves relevant learning material, and can move backwards through revision and retesting until the weak areas meet the required level.
 
 ## 4.A complete walkthrough
-**Rules**
-The agent first reads the student's uploaded DBMS Normalisation material and identifies the important concepts to be tested.
-The initial quiz covers the identified concepts.
-A concept is considered not mastered if the student scores below 100% on questions related to that concept.
-The student reaches the required mastery level when every identified concept has a score of 100%.
-If a concept is not mastered, the agent retrieves the relevant notes for that concept from the student's uploaded material.
-The student rereads/revises the retrieved material and confirms when they are ready.
-The agent then generates a new targeted quiz specifically for that concept.
-If the student scores below 100% again, the agent repeats the revision → retesting loop for that concept.
-The agent finishes only when all identified concepts have reached 100%.
+### Rules
+- The agent first reads the student's uploaded study material and identifies the important concepts to be tested.
+- The initial quiz covers the identified concepts.
+- A concept is considered **not mastered if the student scores below 100%** on questions related to that concept.
+- The student reaches the required mastery level when **every identified concept has a score of 100%**.
+- If a concept is not mastered, the agent retrieves the relevant notes for that concept from the student's uploaded study material.
+- The student rereads/revises the retrieved material and confirms when they are ready.
+- The agent then generates a new targeted quiz specifically for that concept.
+- If the student scores below 100% again, the agent repeats the **revision → re-testing** loop for that concept.
+- The agent finishes only when **all identified concepts have reached 100%**.
 
-**Step 1** — Student starts the revision session
-Student: Ayisha
-Topic: DBMS Normalisation
-Study material: Uploaded DBMS Normalisation PDF
-The agent reads the material and identifies the important concepts to be tested:
-Functional Dependencies
-1NF
-2NF
-3NF
-BCNF
+### Step 1 — Student starts the revision session
+
+**Student:** Ayisha
+
+**Topic:** DBMS Normalisation
+
+**Study material:** Uploaded DBMS Normalisation PDF
+
+The agent reads the material and identifies these important concepts:
+
+- Functional Dependencies
+- 1NF
+- 2NF
+- 3NF
+- BCNF
+
 These concepts are covered in the uploaded material.
 
-**Step 2** — Agent generates the initial quiz
-The agent generates 10 questions, with 2 questions covering each identified concept.
+### Step 2 — Agent generates the initial quiz
+
+The agent generates **10 questions**, with 2 questions covering each identified concept.
+
 The student answers all 10 questions.
 
-**Step 3*** — Agent evaluates the answers concept-wise
-The agent records the results:
-Concept	Correct	Score
-Functional Dependencies	2/2	100%
-1NF	2/2	100%
-2NF	1/2	50%
-3NF	2/2	100%
-BCNF	2/2	100%
-Overall	9/10	90%
+### Step 3 — Agent evaluates the answers
+
+The agent evaluates the answers concept-wise and records:
+
+| Concept | Correct | Score |
+|---|---:|---:|
+| Functional Dependencies | 2/2 | 100% |
+| 1NF | 2/2 | 100% |
+| 2NF | 1/2 | 50% |
+| 3NF | 2/2 | 100% |
+| BCNF | 2/2 | 100% |
+| **Overall** | **9/10** | **90%** |
+
 The overall score is 90%, but the agent does not finish because the student has not achieved 100% in every concept.
 
-**Step 4** — Agent identifies the concept that needs revision
-The agent identifies:
-2NF — 50% — Not mastered
-The agent goes back to the student's uploaded material and retrieves the relevant 2NF notes instead of asking the student to reread the entire topic.
-The uploaded material explains the conditions for 2NF and gives examples involving candidate keys and partial dependency.
-The agent tells the student: “You have not yet reached 100% in 2NF. Please reread the 2NF material provided from your uploaded notes before attempting the next quiz.”
+### Step 4 — Agent identifies the concept that needs revision
 
-**Step 5** — Student revises the concept
+The agent identifies:
+
+**2NF — 50% — Not mastered**
+
+The agent goes back to the student's uploaded material and retrieves the relevant 2NF notes instead of asking the student to reread the entire topic.
+
+The agent tells the student:
+
+> "You have not yet reached 100% in 2NF. Please reread the 2NF material provided from your uploaded notes before attempting the next quiz."
+
+### Step 5 — Student revises the concept
+
 The student rereads the retrieved 2NF material.
-The agent asks: “Have you finished revising 2NF and are you ready for the follow-up quiz?”
-Student: “Yes, I'm ready.”
+
+The agent asks:
+
+> "Have you finished revising 2NF and are you ready for the follow-up quiz?"
+
+**Student:** "Yes, I'm ready."
+
 The workflow waits for the student's response before continuing.
 
-**Step 6** — Agent generates a targeted quiz
-The agent generates 3 new questions specifically about 2NF.
+### Step 6 — Agent generates a targeted quiz
+
+The agent generates **3 new questions specifically about 2NF**.
+
 The student answers all 3 questions.
 
-**Step 7** — Agent evaluates the targeted quiz
+### Step 7 — Agent evaluates the targeted quiz
+
 The student gets:
-2NF: 3/3 = 100% 
+
+**2NF: 3/3 = 100%**
+
 The agent now checks all concepts again:
-Concept	Score	Status
-Functional Dependencies	100% Mastered
-1NF	100%	 Mastered
-2NF	100%	 Mastered
-3NF	100%	 Mastered
-BCNF 100%	 Mastered
+
+| Concept | Score | Status |
+|---|---:|---|
+| Functional Dependencies | 100% | Mastered |
+| 1NF | 100% | Mastered |
+| 2NF | 100% | Mastered |
+| 3NF | 100% | Mastered |
+| BCNF | 100% | Mastered |
+
 Since every concept has reached 100%, the mastery condition is satisfied.
 
-**Step 8** — Agent finishes
+### Step 8 — Agent finishes
+
 The agent stores the final revision result:
-Student: Ayisha
-Topic: DBMS Normalisation
-Initial overall score: 90%
-Concept requiring revision: 2NF
-Initial 2NF score: 50%
-Targeted revision: Completed
-Follow-up 2NF score: 100%
-Final mastery: 100% 
+
+- **Student:** Ayisha
+- **Topic:** DBMS Normalisation
+- **Initial overall score:** 90%
+- **Concept requiring revision:** 2NF
+- **Initial 2NF score:** 50%
+- **Targeted revision:** Completed
+- **Follow-up 2NF score:** 100%
+- **Final mastery:** 100%
 
 ## 5. Who is doing the thinking 
 | Step | The agent does it | The human does it | What the human loses if the agent does it |
