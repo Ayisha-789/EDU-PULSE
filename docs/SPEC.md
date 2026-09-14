@@ -380,26 +380,26 @@ The 100% mastery requirement, concept-wise evaluation, and the decision to send 
    The mobile app is part of the larger EDU-PULSE idea, but for this two-day agent slice we are focusing on building and testing the agent workflow first.
 
 ## 12. Build order
-| Phase | What lands | Hours |
+| phase | what lands | hours |
 |---|---|---:|
-| 1 | Build the basic end-to-end flow: upload study material → identify concepts → generate quiz → student answers → concept-wise evaluation. We first use simple/fixed test answers to make sure the flow works. | 8 |
-| **Cut line** | **We can upload material, generate a quiz, evaluate the answers concept-wise, and identify concepts below 100%.** | |
-| 2 | Add targeted material retrieval and the student waiting step. The agent finds the relevant material for a concept below 100% and waits for the student to confirm that they are ready for the next quiz. | 10 |
-| **Cut line** | **The student can revise a specific weak concept and take a targeted quiz on it.** | |
-| 3 | Add state management, saved session data, concept-wise history, and the backward revision loop. The agent can go back to revision and re-testing when a concept is still below 100%. | 14 |
-| **Cut line** | **The complete agentic loop works: identify weak concept → retrieve material → student revises → targeted quiz → evaluate → repeat if needed.** | |
-| 4 | Connect and improve the real model calls, handle errors, test the workflow with classmates, fix issues, and prepare the final demonstration. | 16 |
-| **Cut line** | **A working and tested one-topic revision agent is ready for the final demo.** | |
+| **1** | Basic revision flow: material analysis, concept identification, initial quiz, concept-wise evaluation, and the 100% mastery check using sample/test data. | **5** |
+| | *cut line: we can show the quiz → evaluation → identify not-mastered concept → targeted revision → retesting flow, even without the real AI model.* | |
+| **2** | Add the real AI model for quiz generation, answer evaluation, concept identification, and retrieval of relevant material from the uploaded study material. | **6** |
+| | *cut line: a real topic and study material produce a real quiz, concept-wise result, and targeted revision material.* | |
+| **3** | Add saved session state, student revision confirmation/waiting state, targeted re-quiz, and the revision → retesting loop until the required mastery level is reached. | **7** |
+| | *cut line: the complete agent works end to end, including the backward loop and continuing after the student's response.* | |
+| **4** | Test with students, fix issues, and make the demo flow clear and reliable. | **4** |
+| | *cut line: we have a stable working demo that can be shown from start to finish.* | |
+
+The planned active build time is **22 hours**. The remaining hackathon time is available for breaks, discussions, debugging, testing, and unexpected issues.
 
 ### How we will build
-We will first make the complete workflow work with simple test answers before spending time on prompts and other improvements. Then we will connect the real model calls and improve the responses.
+We will first make the complete workflow work end to end using sample/test data before connecting the real AI model. Once the workflow is working, we will add the real model calls and saved session state. We will refine the prompts while testing the actual outputs rather than spending the early build time only on prompts.
 
-We will also save useful model responses during testing so that we can replay them when needed instead of repeatedly making the same model calls.
+We will also save useful model responses during testing so that we can replay them when needed.
 
 ### Where the hours will actually go
-The time will mainly go into building the workflow, connecting the model calls, testing concept-wise evaluation and targeted material retrieval, and making sure the backward revision loop works correctly. We will also test the agent with classmates and use their feedback to fix problems before the final demo.
-
-The main fallback is the cut line after Phase 3. Even if we cannot finish the final improvements, we will still have the complete one-topic revision loop working.
+We expect most of the time to go into testing the model outputs, checking concept-wise evaluation and targeted material retrieval, and making sure the revision → retesting loop works correctly.
 
 ## 13. The demo
 1. **Student starts a revision session**
@@ -490,5 +490,6 @@ Check that the session reaches the correct final state and that the stored score
 Check what happens if the uploaded study material contains instructions such as "ignore the task" or other text that tries to change what the agent should do.
 
 The agent should treat the uploaded material as **study data, not as instructions**. It should continue following the defined workflow and should not let the uploaded content change the agent's rules or state transitions.
+
 
 
