@@ -167,36 +167,32 @@ The agent stores the final revision result:
 **How the output shows that:** The session record shows that the agent is waiting for the student's response, rather than continuing automatically. Once the student responds, the record is updated and the agent either proceeds to the targeted quiz or remains waiting if the student is not ready.
 
 ## 6. The state machine
+```text
 Material Analysis → Initial Quiz → Initial Evaluation
-                                      |
-                         ┌────────────┴────────────┐
-                         ↓                         ↓
-              All concepts = 100%       Any concept < 100%
-                         |                         |
-                         ↓                         ↓
-                      FINISHED          Targeted Material
+                                      ↓
+                              All concepts = 100%?
+                                ↙             ↘
+                              Yes              No
+                              ↓                ↓
+                          FINISHED      Targeted Material
                                            Retrieval
-                                               |
                                                ↓
                                     Waiting for Student
                                          Revision
-                                               |
                                                ↓
                                         Targeted Quiz
-                                               |
                                                ↓
                                       Targeted Evaluation
-                                               |
                                                ↓
-                                    Concept = 100%?
-                                      /           \
-                                    Yes            No
-                                     |              |
-                                     ↓              |
-                              Check remaining       |
-                                concepts            |
-                                     |              |
-                                     └──────────────┘
+                                      Concept = 100%?
+                                        ↙          ↘
+                                      Yes           No
+                                       ↓             ↓
+                              Check remaining      ↩
+                                 concepts       Revision Loop
+                                       ↓
+                                    FINISHED
+```
 
 | State | Active / Waiting / Finished | What moves it on |
 |---|---|---|
