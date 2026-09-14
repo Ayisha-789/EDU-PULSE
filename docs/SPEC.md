@@ -269,42 +269,36 @@ class RevisionSession(BaseModel):
 
 ## 8. Step-by-step contracts
 ### 1. Material Analysis — START → Initial Quiz
-
 - **What:** Reads the uploaded study material and finds the important concepts that should be tested.
 - **Why this way:** The quiz should be based on the student's own study material.
 - **Reads / writes:** Reads the uploaded material and saves the identified concepts in the session record.
 - **Done when:** The concepts to be tested are identified and stored.
 
 ### 2. Initial Quiz — Initial Quiz → Initial Evaluation
-
 - **What:** Creates a quiz covering all the identified concepts.
 - **Why this way:** The quiz should check the student's understanding of the whole topic.
 - **Reads / writes:** Reads the identified concepts and study material; saves the generated quiz.
 - **Done when:** The quiz is generated and given to the student.
 
 ### 3. Initial Evaluation — Initial Evaluation → Targeted Material Retrieval / Finished
-
 - **What:** Checks the student's answers and gives a separate score for each concept.
 - **Why this way:** A good overall score can still hide a weak concept.
 - **Reads / writes:** Reads the quiz and student's answers; saves the concept-wise scores.
 - **Done when:** All identified concepts have been evaluated. If every concept is at 100%, the session finishes. Otherwise, a concept below 100% is selected for revision.
 
 ### 4. Targeted Material Retrieval — Targeted Material Retrieval → Waiting for Student Revision
-
 - **What:** Finds the relevant notes for the concept that is below 100% from the student's uploaded material.
 - **Why this way:** The student only needs to revise the concept they are struggling with instead of reading the whole topic again.
 - **Reads / writes:** Reads the uploaded material and selected concept; saves the relevant revision material.
 - **Done when:** The relevant material is retrieved and shown to the student.
 
 ### 5. Waiting for Student Revision — Waiting → Targeted Quiz
-
 - **What:** Waits for the student to confirm that they have finished revising and are ready for the next quiz.
 - **Why this way:** The student decides when they are ready to be tested.
 - **Reads / writes:** Reads the student's response and updates the session state.
 - **Done when:** The student says they are ready. If there is no response, the session stays paused.
 
 ### 6. Targeted Quiz — Targeted Quiz → Targeted Evaluation
-
 - **What:** Creates a new quiz focused only on the concept that was below 100%.
 - **Why this way:** This checks whether the targeted revision helped the student.
 - **Reads / writes:** Reads the selected concept and retrieved revision material; saves the targeted quiz and answers.
@@ -318,25 +312,21 @@ class RevisionSession(BaseModel):
 - **Done when:** If the concept reaches 100%, the agent checks the remaining concepts. If it is still below 100%, it goes back to Targeted Material Retrieval.
 
 ### 8. Finish Check — Evaluation → Finished
-
 - **What:** Checks whether all identified concepts have reached 100%.
 - **Why this way:** The session should finish only when every concept has reached the required level.
 - **Reads / writes:** Reads the stored concept scores and saves the final session status.
 - **Done when:** Every identified concept has reached 100%.
 
 ### Rules enforced in code
-
 The 100% mastery condition, concept-wise scoring, backward revision loop, state changes, revision limit, and spend limit will be checked in the application code, not only in the AI prompt. The code decides whether the agent finishes or sends a concept back for revision and re-testing.
 
 ### Where the documents come in
-
 - **What documents it reads:** The student's uploaded study material for the topic.
 - **What each document lets it prove:** The material is used to identify concepts, create quiz content, and find notes for concepts that need revision.
 - **What it does when the evidence is not there:** If the required information is not present in the uploaded material, the agent says that the information could not be found instead of filling the gap from general knowledge.
 - **How a citation gets checked:** If the agent says that something came from the uploaded material, it must be present in that material.
 
 ### Where the human comes in
-
 - **The question it asks:** "Have you finished revising the weak concept and are you ready for the follow-up quiz?"
 - **Who answers:** The student.
 - **What record the answer becomes:** The student's response is saved in the session record.
