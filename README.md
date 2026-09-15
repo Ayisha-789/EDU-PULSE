@@ -35,8 +35,8 @@ EDU-PULSE is being developed by a team of five members.
 | Team Member | GitHub | Contribution to Agent Specification |
 |---|---|---|
 | Ayisha Banu N | [GitHub Profile](https://github.com/Ayisha-789) | Setting, Problem, What We Are Building, and overall AgentSpec integration |
-| Sai Chandu N | [GitHub Profile](https://github.com/sachandu-ss) | Complete Walkthrough and Human-in-the-Loop |
-| Mohammed Parvez M N | [GitHub Profile](https://github.com/parvez-2007) | State Machine, Data Model, and Step Contracts |
+| Sai Chandu N | [GitHub Profile](https://github.com/saichandu-ss) | Complete Walkthrough and Human-in-the-Loop |
+| Mohammed Parvez M N | [GitHub Profile](https://github.com/parvez-2007)| State Machine, Data Model, and Step Contracts |
 | Agnes Devakirubai S | [GitHub Profile](https://github.com/sagde2008-sys) | Second Encounter, Deliberately Does Not Do, and Build Order |
 | Renuka Devi H | [GitHub Profile](https://github.com/renukadevi-code) | Demo Plan, Growth, Least Sure About|
 
