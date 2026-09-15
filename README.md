@@ -31,19 +31,24 @@ Understand → Plan → Study → Verify → Test → Analyse → Account → Ad
 
 ## Team — New Stars
 EDU-PULSE is being developed by a team of five members.
+The Agent Specification was prepared collaboratively by all five team members, with different sections handled by different members.
 
-| Team Member | GitHub | Contribution to Agent Specification |
-|---|---|---|
-| Ayisha Banu N | [GitHub Profile](https://github.com/Ayisha-789) | Setting, Problem, What We Are Building, and overall AgentSpec integration |
-| Sai Chandu N | [GitHub Profile](https://github.com/saichandu-ss) | Complete Walkthrough and Human-in-the-Loop |
-| Mohammed Parvez M N | [GitHub Profile](https://github.com/parvez-2007)| State Machine, Data Model, and Step Contracts |
-| Agnes Devakirubai S | [GitHub Profile](https://github.com/sagde2008-sys) | Second Encounter, Deliberately Does Not Do, and Build Order |
-| Renuka Devi H | [GitHub Profile](https://github.com/renukadevi-code) | Demo Plan, Growth, Least Sure About|
+- **Ayisha Banu** — [GitHub Profile](https://github.com/Ayisha-789)  
+  Worked on the Setting, Problem, What We Are Building, and overall integration of the Agent Specification.
 
-All five team members collaboratively discussed, reviewed, and refined the
-Agent Specification to ensure that the proposed agent could be realistically
-built and tested within the hackathon timeframe.
+- **Sai Chandu N** — [GitHub Profile](https://github.com/saichandu-ss)  
+  Worked on the Complete Walkthrough and Human-in-the-Loop section.
 
+- **Mohamed Parvez N N**  
+  Worked on the State Machine, Data Model, and Step Contracts.
+
+- **Agnes Devakirubai S**  
+  Worked on the Second Encounter, Deliberately Does Not Do, and Build Order sections.
+
+- **Renuka Devi H**  
+  Worked on the Demo Plan, Growth
+
+All five team members collaboratively discussed, reviewed, and refined the Agent Specification to ensure that the proposed agent could be realistically built and tested within the hackathon timeframe.
 Our team consists of five members working together on different parts of
 the EDU-PULSE system.
 
@@ -55,3 +60,16 @@ This repository contains our **Agent Specification document** for the
 **Adaptive One-Topic Revision Agent**, prepared as part of the Agent-a-Thon.
 
 📄 **[View our Agent Specification — SPEC.md](docs/SPEC.md)**
+
+
+
+
+
+
+
+
+
+
+
+
+
