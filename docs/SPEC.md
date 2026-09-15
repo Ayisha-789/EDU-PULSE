@@ -41,7 +41,7 @@ The agent keeps the student's progress and quiz results, decides which subtopic 
 - The student rereads/revises the retrieved material and confirms when they are ready.
 - The agent then generates a new targeted quiz specifically for that concept.
 - If the student scores below 100% again, the agent repeats the **revision → re-testing** loop for that concept.
-- The agent finishes only when **all identified concepts have reached 100%**.
+- The agent finishes when all identified concepts have reached 100%. If a concept still has not reached 100% after the allowed revision limit, the session stops and reports that the concept was not mastered within the allowed attempts.
 
 ### Step 1 — Student starts the revision session
 **Student:** Ayisha
@@ -166,19 +166,19 @@ The agent stores the final revision result:
 ```text
 Material Analysis → Initial Quiz → Initial Evaluation
                                       ↓
-                              All concepts = 100%?
+                             All concepts = 100%?
                                 ↙             ↘
                               Yes              No
-                              ↓                ↓
-                          FINISHED      Targeted Material
-                                           Retrieval
+                               ↓                ↓
+                           FINISHED      Targeted Material
+                                          Retrieval
                                                ↓
-                                    Waiting for Student
-                                         Revision
+                                  Waiting for Student
+                                        Revision
                                                ↓
-                                        Targeted Quiz
+                                       Targeted Quiz
                                                ↓
-                                      Targeted Evaluation
+                                     Targeted Evaluation
                                                ↓
                                       Concept = 100%?
                                         ↙          ↘
@@ -186,8 +186,13 @@ Material Analysis → Initial Quiz → Initial Evaluation
                                        ↓             ↓
                               Check remaining      ↩
                                  concepts       Revision Loop
-                                       ↓
-                                    FINISHED
+                                   ↓
+                           All concepts = 100%?
+                              ↙             ↘
+                            Yes              No
+                             ↓                ↓
+                         FINISHED      Targeted Material
+                                       Retrieval
 ```
 
 | State | Active / Waiting / Finished | What moves it on |
@@ -202,7 +207,7 @@ Material Analysis → Initial Quiz → Initial Evaluation
 | **Finished** | Finished | All identified concepts have reached 100% mastery. |
 | **Stopped** | Finished | The run reaches its revision or spend limit before all concepts reach 100%. |
 
-**What can send work backwards:** The **Targeted Evaluation** state can send the work back to **Targeted Material Retrieval** when the student's score for that concept is below 100%. This creates the revision → re-testing loop.
+**What can send work backwards:** The **Targeted Evaluation** state can send the work back to **Targeted Material Retrieval** when the student's score for that concept is below 100%. If the concept reaches 100%, the agent checks the remaining concepts. If any other concept is still below 100%, that concept is sent to **Targeted Material Retrieval**.
 
 **What the run decides that the diagram cannot show:**  The agent decides which concepts need revision based on the student's concept-wise quiz scores, retrieves the relevant material for those concepts, decides when a targeted re-test is needed, and decides whether the concept has reached 100% mastery or needs another revision cycle. The agent also decides which concept to handle next when multiple concepts are not mastered.
 
@@ -311,7 +316,7 @@ class RevisionSession(BaseModel):
 - **Reads / writes:** Reads the targeted quiz and student's answers; saves the new score and revision attempt count.
 - **Done when:** If the concept reaches 100%, the agent checks the remaining concepts. If it is still below 100%, it goes back to Targeted Material Retrieval.
 
-### 8. Finish Check — Evaluation → Finished
+### 8. Finish Check — Evaluation → Finished / Targeted Material Retrieval
 - **What:** Checks whether all identified concepts have reached 100%.
 - **Why this way:** The session should finish only when every concept has reached the required level.
 - **Reads / writes:** Reads the stored concept scores and saves the final session status.
@@ -362,6 +367,9 @@ State names, state transitions, stored record structure, spend limit, and revisi
 
 **Which are our domain decisions:**  
 The 100% mastery requirement, concept-wise evaluation, and the decision to send a concept back for targeted revision are specific to our EDU-PULSE agent.
+
+**Why it helps:**  
+Each file has a clear responsibility, so different team members can work on different parts without changing the whole workflow.
 
 ## 11. What this deliberately does not do
 1. **It does not create a full study timetable or daily schedule.**  
