@@ -166,33 +166,33 @@ The agent stores the final revision result:
 ```text
 Material Analysis → Initial Quiz → Initial Evaluation
                                       ↓
-                             All concepts = 100%?
-                                ↙             ↘
-                              Yes              No
-                               ↓                ↓
-                           FINISHED      Targeted Material
-                                          Retrieval
-                                               ↓
+                              All concepts = 100%?
+                               ↙              ↘
+                             Yes              No
+                              ↓                ↓
+                          FINISHED      Targeted Material
+                                         Retrieval
+                                             ↓
                                   Waiting for Student
                                         Revision
-                                               ↓
-                                       Targeted Quiz
-                                               ↓
-                                     Targeted Evaluation
-                                               ↓
-                                      Concept = 100%?
-                                        ↙          ↘
-                                      Yes           No
-                                       ↓             ↓
-                              Check remaining      ↩
-                                 concepts       Revision Loop
-                                   ↓
-                           All concepts = 100%?
-                              ↙             ↘
-                            Yes              No
-                             ↓                ↓
-                         FINISHED      Targeted Material
-                                       Retrieval
+                                             ↓
+                                      Targeted Quiz
+                                             ↓
+                                   Targeted Evaluation
+                                             ↓
+                                    Concept = 100%?
+                                      ↙          ↘
+                                    Yes          No
+                                     ↓            ↓
+                              Check remaining   Targeted Material
+                                concepts        Retrieval
+                                     ↓              ↑
+                              All concepts =       |
+                                  100%?             |
+                                ↙      ↘             |
+                              Yes      No -----------+
+                               ↓
+                           FINISHED
 ```
 
 | State | Active / Waiting / Finished | What moves it on |
@@ -445,8 +445,6 @@ The main revision flow will be shown live. If a model response takes too long or
 
 ### If the model gives an unexpected result
 If the model gives an incorrect or unexpected response, we will not silently accept it. The application will check the required structure and mastery condition, and we will show the result only when it passes the required checks.
-
-**Why it helps:** Each file has a clear responsibility, so different team members can work on different parts without changing the whole workflow.
 
 ## 14. How this grows
 Our current agent is focused on checking one topic at a time. The same structure can be extended later without changing the main revision loop.
