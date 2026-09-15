@@ -39,7 +39,7 @@ The Agent Specification was prepared collaboratively by all five team members, w
 - **Sai Chandu N** — [GitHub Profile](https://github.com/saichandu-ss)  
   Worked on the Complete Walkthrough and Human-in-the-Loop section.
 
-- **Mohamed Parvez N N**  
+- **Mohamed Parvez N N**  — [GitHub Profile](https://github.com/parvez-2007)  
   Worked on the State Machine, Data Model, and Step Contracts.
 
 - **Agnes Devakirubai S**  
