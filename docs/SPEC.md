@@ -31,7 +31,7 @@ The agent never declares the student ready based only on the overall score; it m
 **Why this is agentic, in our own words:**
 The agent keeps the student's progress and quiz results, decides which subtopic needs attention based on the student's answers, retrieves the relevant part of the uploaded material for revision, and chooses whether to finish or send the work back for targeted revision and another quiz. The student is part of the loop by answering the quizzes and confirming when they are ready to continue, and the workflow can pause for the student's response and resume later. The important difference from a normal AI quiz generator is that the agent does not simply generate questions and give a score—it evaluates the result, decides the next action, retrieves relevant learning material, and can move backwards through revision and retesting until the weak areas meet the required level.
 
-## 4.A complete walkthrough
+## 4. A complete walkthrough
 ### Rules
 - The agent first reads the student's uploaded study material and identifies the important concepts to be tested.
 - The initial quiz covers the identified concepts.
