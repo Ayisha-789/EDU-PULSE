@@ -1,14 +1,12 @@
 # EDU-PULSE
 
-## Agentic AI for Adaptive Learning & Student Accountability
+### Agentic AI for Adaptive Learning & Student Accountability
 
-EDU-PULSE is an agentic AI learning companion designed to help students
-plan their learning, stay accountable, verify their understanding, identify
-weak concepts, and adapt their learning based on their actual performance.
+**Hackathon Focus: Adaptive One-Topic Revision Agent**
 
-Unlike a conventional study planner that only creates a timetable, EDU-PULSE
-aims to continuously understand the student's learning state and take the
-next appropriate action based on their progress, performance, and behaviour.
+EDU-PULSE is an agentic AI learning companion designed to help students plan their learning, stay accountable, verify their understanding, identify weak concepts, and adapt their learning based on their actual performance.
+
+For the current Agent-a-Thon, we are focusing on building and testing one concrete agentic slice: the Adaptive One-Topic Revision Agent. The other capabilities represent the broader vision of EDU-PULSE and are outside the current hackathon scope.
 
 ## What EDU-PULSE Does
 
